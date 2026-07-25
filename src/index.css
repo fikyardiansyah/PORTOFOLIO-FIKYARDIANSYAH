@@ -345,6 +345,14 @@ section { position: relative; z-index: 1; }
 .info-row .k { color: var(--text-dim); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 .info-row .v { color: var(--text); font-weight: 500; }
 
+/* ---------- Pasang Foto Portofolio ---------- */
+.photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
 /* ---------- EDUCATION ---------- */
 .timeline { position: relative; padding-left: 26px; }
 .timeline::before {
@@ -573,6 +581,15 @@ section { position: relative; z-index: 1; }
   margin-top: 12px;
 }
 
+.dither-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; 
+  height: 100%;
+  opacity: 0.9;
+  pointer-events: none;   /* tambahkan baris ini */
+}
+
 /* ---------- FOOTER ---------- */
 .footer {
   border-top: 1px solid var(--border-soft);
@@ -599,3 +616,55 @@ section { position: relative; z-index: 1; }
   .nav-links { display: none; }
   .nav-burger { display: inline-flex; align-items:center; justify-content:center; }
 }
+
+/* ---------- Admin Dashboard ---------- */
+.nav-admin-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  padding: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+.nav-admin-btn:hover { border-color: var(--accent-line); color: var(--accent); }
+
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.admin-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 26px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.admin-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+}
+.admin-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.admin-close:hover { color: var(--accent); }

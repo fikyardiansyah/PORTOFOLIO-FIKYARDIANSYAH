@@ -1,6 +1,7 @@
 // import React from "react";
 import { Radio, Download, Heart, ChevronRight } from "lucide-react";
 import DitherField from "../components/DitherField.jsx";
+import profilePhoto from "../assets/images/Fiky.jpeg";
 
 export default function Hero({ registerRef, scrollTo }) {
   return (
@@ -13,14 +14,17 @@ export default function Hero({ registerRef, scrollTo }) {
             Moh Fiky<br />Ardiansyah<span className="cursor-blink">&nbsp;</span>
           </h1>
           <div className="hero-role">
-            <b>Information Technology</b> student · Semester 6 · Politeknik Negeri Bali
+            <b>Teknologi Informasi</b> student · Semester 6 · Politeknik Negeri Bali
           </div>
           <div className="hero-cta">
-            <a className="btn btn-primary" href="#" onClick={(e) => e.preventDefault()}>
-              <Download size={15} /> Download CV
+           <a className="btn btn-primary" href="/documents/CV_fikyardiansyah.pdf" 
+             target="_blank" rel="noreferrer">
+              <Download size={15} /> 
+              <b>Lihat & Download CV</b>
             </a>
             <a className="btn btn-coral" href="https://saweria.co/" target="_blank" rel="noreferrer">
-              <Heart size={15} /> Support via Saweria
+              <Heart size={15} /> 
+              <b>Support via Saweria</b>
             </a>
             <button className="btn" onClick={() => scrollTo("projects")}>
               View projects <ChevronRight size={15} />
@@ -29,8 +33,7 @@ export default function Hero({ registerRef, scrollTo }) {
         </div>
         <div className="photo-frame">
           <span className="corner tl" /><span className="corner br" />
-          <div className="monogram">MFA</div>
-          <div className="hint">place your photo here — replace the .photo-frame contents with an &lt;img&gt; tag</div>
+          <img src={profilePhoto} alt="Moh Fiky Ardiansyah" className="photo-img" />
         </div>
       </div>
     </section>

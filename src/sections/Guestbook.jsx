@@ -1,26 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Star, Send } from "lucide-react";
 import Eyebrow from "../components/Eyebrow.jsx";
-import { SEED_COMMENTS } from "../data.js";
+import { supabase } from "../lib/supabase.js";
 
 export default function Guestbook() {
-  const [comments, setComments] = useState(SEED_COMMENTS);
+  const [comments, setComments] = useState([]);
   const [form, setForm] = useState({ name: "", message: "" });
   const [rating, setRating] = useState(5);
   const [hoverStar, setHoverStar] = useState(0);
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const submitComment = (e) => {
+  const loadComments = async () => {
+    const { data, error } = await supabase
+      .from("comments")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error) setComments(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadComments();
+  }, []);
+
+  const submitComment = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.message.trim()) return;
-    setComments([
-      { id: Date.now(), name: form.name.trim(), rating, message: form.message.trim() },
-      ...comments,
-    ]);
-    setForm({ name: "", message: "" });
-    setRating(5);
-    setSent(true);
-    setTimeout(() => setSent(false), 2500);
+    const { error } = await supabase.from("comments").insert({
+      name: form.name.trim(),
+      rating,
+      message: form.message.trim(),
+    });
+    if (!error) {
+      setForm({ name: "", message: "" });
+      setRating(5);
+      setSent(true);
+      setTimeout(() => setSent(false), 2500);
+      loadComments();
+    }
   };
 
   return (
@@ -63,6 +81,10 @@ export default function Guestbook() {
         </form>
 
         <div className="gb-list">
+          {loading && <div className="section-lede">Loading comments...</div>}
+          {!loading && comments.length === 0 && (
+            <div className="section-lede">Belum ada komentar, jadi yang pertama!</div>
+          )}
           {comments.map((c) => (
             <div className="gb-item" key={c.id}>
               <div className="gb-item-head">

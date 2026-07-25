@@ -9,10 +9,12 @@ import Achievements from "./sections/Achievements.jsx";
 import Contact from "./sections/Contact.jsx";
 import Guestbook from "./sections/Guestbook.jsx";
 import Footer from "./sections/Footer.jsx";
+import AdminDashboard from "./sections/AdminDashboard.jsx";
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("profile");
+  const [adminOpen, setAdminOpen] = useState(false);
   const sectionRefs = useRef({});
 
   useEffect(() => {
@@ -38,7 +40,13 @@ export default function App() {
 
   return (
     <div className="site">
-      <Navbar active={active} menuOpen={menuOpen} setMenuOpen={setMenuOpen} scrollTo={scrollTo} />
+      <Navbar
+        active={active}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+        scrollTo={scrollTo}
+        onOpenAdmin={() => setAdminOpen(true)}
+      />
       <Hero registerRef={registerRef} scrollTo={scrollTo} />
       <About />
       <Education />
@@ -48,6 +56,7 @@ export default function App() {
       <Guestbook />
       <Contact />
       <Footer />
+      {adminOpen && <AdminDashboard onClose={() => setAdminOpen(false)} />}
     </div>
   );
 }
