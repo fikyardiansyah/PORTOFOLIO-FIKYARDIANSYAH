@@ -1,7 +1,7 @@
 // import React from "react";
 import { Radio, Download, Heart, ChevronRight } from "lucide-react";
 import DitherField from "../components/DitherField.jsx";
-import profilePhoto from "../assets/images/Fiky.jpeg";
+import profilePhoto from "../assets/images/Fiky1.jpeg";
 
 export default function Hero({ registerRef, scrollTo }) {
   return (

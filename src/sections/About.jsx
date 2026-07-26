@@ -1,5 +1,9 @@
 // import React from "react";
 import Eyebrow from "../components/Eyebrow.jsx";
+import mainVideo from "../assets/videos/main.mp4";
+import clip1 from "../assets/videos/clip-1.mp4";
+import clip2 from "../assets/videos/clip-2.mp4";
+import clip3 from "../assets/videos/clip-3.mp4";
 
 export default function About() {
   return (
@@ -26,13 +30,21 @@ export default function About() {
             <span className="focus-tag">Sports enthusiast</span>
           </div>
         </div>
-        <div className="info-card">
-          <div className="info-row"><span className="k">Name</span><span className="v">Moh Fiky Ardiansyah</span></div>
-          <div className="info-row"><span className="k">Major</span><span className="v">Information Technology</span></div>
-          <div className="info-row"><span className="k">Semester</span><span className="v">6</span></div>
-          <div className="info-row"><span className="k">Focus</span><span className="v">Frontend &amp; UI/UX</span></div>
-          <div className="info-row"><span className="k">Status</span><span className="v">Open for internship</span></div>
-          <div className="info-row"><span className="k">Base</span><span className="v">Denpasar, Bali</span></div>
+
+        <div className="about-video-main">
+          <video src={mainVideo} autoPlay loop muted playsInline />
+        </div>
+      </div>
+
+      <div className="about-video-row">
+        <div className="about-video-item">
+          <video src={clip1} autoPlay loop muted playsInline />
+        </div>
+        <div className="about-video-item">
+          <video src={clip2} autoPlay loop muted playsInline />
+        </div>
+        <div className="about-video-item">
+          <video src={clip3} autoPlay loop muted playsInline />
         </div>
       </div>
     </section>

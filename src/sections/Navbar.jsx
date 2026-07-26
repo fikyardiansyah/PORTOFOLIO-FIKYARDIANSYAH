@@ -5,7 +5,7 @@ export default function Navbar({ active, menuOpen, setMenuOpen, scrollTo, onOpen
   return (
     <>
       <nav className="nav">
-        <div className="nav-logo">Porto<span>FiardStore</span></div>
+        <div className="nav-logo">Porto<span>MFA</span></div>
         <div className="nav-links">
           {NAV_LINKS.map((l) => (
             <button key={l.id} className={active === l.id ? "is-active" : ""} onClick={() => scrollTo(l.id)}>
