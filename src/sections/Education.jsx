@@ -22,7 +22,7 @@ export default function Education() {
               <GraduationCap size={16} />
             </div>
             <div className="timeline-content">
-              <div className="timeline-index">0{i + 1}</div>
+              {/* <div className="timeline-index">0{}</div> */}
               <div className="timeline-year">{e.year}</div>
               <div className="timeline-school">{e.school}</div>
               <div className="timeline-note">{e.note}</div>

@@ -101,9 +101,34 @@ export const PROJECTS = [
 ];
 
 export const CERTIFICATES = [
-  { id: "cyber", org: "SAWAH Cyber Security", title: "Certificate of Competence", icon: "shield" },
-  { id: "aws", org: "AWS Academy", title: "AWS Academy Graduate — Introduction to Cloud, Semester 1", icon: "cloud" },
-  { id: "ccna", org: "Cisco CCNAIT", title: "Certificate of Course Completion", icon: "network" },
+  {
+    id: "PTINET",
+    org: "PT INET GLOBAL INDO",
+    title: "Certificate of Competence",
+    icon: "shield",
+    image: "/certificates/PT inet.jpeg",
+  },
+  {
+    id: "sawah",
+    org: "Sawah Cyber Security",
+    title: "Certificate of Competence",
+    icon: "cloud",
+    image: "/certificates/sawah-competence.png",
+  },
+  {
+    id: "sawah",
+    org: "Sawah Cyber Security",
+    title: "Certificate of Participation",
+    icon: "cloud",
+    image: "/certificates/sawah-participation.png",
+  },
+  {
+    id: "ccna",
+    org: "Cisco CCNAIT",
+    title: "Certificate of Course Completion",
+    icon: "network",
+    image: "/certificates/CCNA Cisco.jpeg",
+  },
 ];
 
 export const SEED_COMMENTS = [
