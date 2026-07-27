@@ -11,17 +11,93 @@ export const EDUCATION = [
 ];
 
 export const SKILLS = [
-  { group: "Frontend", iconName: "Code2", items: ["Tailwind CSS", "HTML", "CSS", "JavaScript", "React.js"] },
-  { group: "Backend", iconName: "Wrench", items: ["Node.js", "Laravel", "PHP"] },
-  { group: "Database", iconName: "Database", items: ["MySQL", "SQLite", "Supabase"] },
-  { group: "UI/UX tools", iconName: "Palette", items: ["Figma", "Google Stitch"] },
-  { group: "Others", iconName: "Terminal", items: ["Git", "GitHub", "Visual Studio Code", "AntiGravity"] },
+  {
+    group: "Frontend",
+    iconName: "Code2",
+    items: [
+      { name: "Tailwind CSS", slug: "tailwind" },
+      { name: "HTML", slug: "html" },
+      { name: "CSS", slug: "css" },
+      { name: "JavaScript", slug: "js" },
+      { name: "React.js", slug: "react" },
+    ],
+  },
+  {
+    group: "Backend",
+    iconName: "Wrench",
+    items: [
+      { name: "Node.js", slug: "nodejs" },
+      { name: "Laravel", slug: "laravel" },
+      { name: "PHP", slug: "php" },
+    ],
+  },
+  {
+    group: "Database",
+    iconName: "Database",
+    items: [
+      { name: "MySQL", slug: "mysql" },
+      { name: "SQLite", slug: "sqlite" },
+      { name: "Supabase", slug: "supabase" },
+    ],
+  },
+  {
+    group: "UI/UX tools",
+    iconName: "Palette",
+    items: [
+      { name: "Figma", slug: "figma" },
+      { name: "Google Stitch", slug: null },
+    ],
+  },
+  {
+    group: "Others",
+    iconName: "Terminal",
+    items: [
+      { name: "Git", slug: "git" },
+      { name: "GitHub", slug: "github" },
+      { name: "Visual Studio Code", slug: "vscode" },
+      { name: "AntiGravity", slug: null },
+    ],
+  },
 ];
 
 export const PROJECTS = [
-  { id: "balinara", tag: "01", name: "Balinara", desc: "A digital web platform built to be your main guide for exploring the beauty of the Island of the Gods, Bali.", stack: ["Vue.js", "Django", "MySQL"], accent: "mint" },
-  { id: "warung-bu-ami", tag: "02", name: "Warung Bu Ami", desc: "A booking and information website developed for Warung Bu Ami, covering menu browsing and table reservations.", stack: ["PHP", "Next.js", "MySQL"], accent: "coral" },
-  { id: "gasngo", tag: "03", name: "GASNGO", desc: "A web-based information system for car rental, handling listings, availability, and rental transactions.", stack: ["Vue.js", "JavaScript", "Supabase"], accent: "mint" },
+  {
+    id: "balinara",
+    tag: "01",
+    name: "Balinara",
+    desc: "A digital web platform built to be your main guide for exploring the beauty of the Island of the Gods, Bali.",
+    stack: ["Vue.js", "Django", "MySQL"],
+    accent: "mint",
+    images: [
+      "/projects/balinara.png",
+      // "/projects/balinara-2.jpeg",
+      // "/projects/balinara-3.jpg",
+    ],
+  },
+  {
+    id: "NeptuneThrift",
+    tag: "02",
+    name: "NeptuneThrift",
+    desc: "A web-based sales and information system for a second-hand shoe store, featuring product catalog management, detailed product information, inventory tracking, and online order processing.",
+    stack: ["PHP", "Next.js", "MySQL"],
+    accent: "coral",
+    images: [
+      "/projects/neptune.jpeg",
+      // "/projects/balinara-2.jpeg",
+    ],
+  },
+  {
+    id: "gasngo",
+    tag: "03",
+    name: "GASNGO",
+    desc: "A web-based information system for car rental, handling listings, availability, and rental transactions.",
+    stack: ["Vue.js", "JavaScript", "Supabase"],
+    accent: "mint",
+    images: [
+      "/projects/gasngo1.png",
+      "/projects/gasngo2.png",
+    ],
+  },
 ];
 
 export const CERTIFICATES = [

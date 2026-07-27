@@ -1,22 +1,45 @@
 // import React from "react";
+import { useState } from "react";
+import { X } from "lucide-react";
 import Eyebrow from "../components/Eyebrow.jsx";
 import mainVideo from "../assets/videos/main.mp4";
 import clip1 from "../assets/videos/clip-1.mp4";
 import clip2 from "../assets/videos/clip-2.mp4";
 import clip3 from "../assets/videos/clip-3.mp4";
+import { useScrollReveal } from "../hooks/useScrollReveal.js";
+
+const CLIPS = [
+  { id: "clip1", 
+    src: clip1, 
+    label: "Tasya Kamila - Say No (Thailand Edit)", 
+    url: "https://youtu.be/6_YMnm5JFGc?si=qiJdmcLdroUBDdYS" 
+  },
+  { id: "clip2", 
+    src: clip2, 
+    label: "Melanie Martinez – Play Date (Thailand Edit)", 
+    url: "https://youtu.be/kwS7sqWfK6A?si=rHHSLMFdgLWOAYO5" },
+  { id: "clip3", 
+    src: clip3, 
+    label: "Manda Cello- Gak Pake Lama (Thailand Edit)", 
+    url: "https://youtu.be/GmqQV_KAz8Y?si=TEt_7-_2xGZfY8VK" },
+];
 
 export default function About() {
+  const [activeVideo, setActiveVideo] = useState(null);
+  const [ref, visible] = useScrollReveal();
+
   return (
-    <section id="about" className="wrap">
+    <section id="about" ref={ref} className={`wrap reveal ${visible ? "reveal-visible" : ""}`}>
       <Eyebrow index="01">About</Eyebrow>
-      <h2 className="section-title">A quick word on who I am</h2>
+      <h2 className="section-title">About Me</h2>
       <div className="about-grid">
         <div className="about-text">
           <p>
             I'm <strong>Moh Fiky Ardiansyah</strong>, a 6th-semester Information Technology
-            student at Politeknik Negeri Bali. My main focus sits at the intersection of
-            <strong> frontend development</strong> and <strong>UI/UX design</strong> — I enjoy
-            shaping ideas into interfaces that feel clear, fast, and easy to use.
+            student at Politeknik Negeri Bali with a strong interest in
+            <strong> Frontend Development</strong> and <strong>UI/UX Design</strong>.
+            I enjoy building clean, responsive, and user-friendly digital experiences
+            that combine functionality with modern design.
           </p>
           <p>
             I like working close to the details: consistent spacing, honest typography, and
@@ -24,10 +47,17 @@ export default function About() {
             through <strong>sports</strong>, which keeps me disciplined and gives me the focus
             I bring back into my work.
           </p>
+          <p>
+            Outside of development, you'll usually find me watching Formula 1 or staying
+            active through sports. I'm a <strong>Max Verstappen</strong> supporter and
+            appreciate his focus, consistency, and competitive mindset—values that also
+            shape how I learn and build software.
+          </p>
           <div className="focus-tags">
             <span className="focus-tag">Frontend development</span>
             <span className="focus-tag">UI / UX design</span>
             <span className="focus-tag">Sports enthusiast</span>
+            <span className="focus-tag">Max Verstappen Supporter</span>
           </div>
         </div>
 
@@ -36,17 +66,49 @@ export default function About() {
         </div>
       </div>
 
-      <div className="about-video-row">
-        <div className="about-video-item">
-          <video src={clip1} autoPlay loop muted playsInline />
-        </div>
-        <div className="about-video-item">
-          <video src={clip2} autoPlay loop muted playsInline />
-        </div>
-        <div className="about-video-item">
-          <video src={clip3} autoPlay loop muted playsInline />
-        </div>
+      <div className="must-watch-label">
+        <span className="must-watch-line" />
+        <span className="must-watch-text">Must Watch</span>
+        <span className="must-watch-line" />
       </div>
+
+      <div className="about-video-row">
+        {CLIPS.map((clip) => (
+          <div className="about-video-wrap" key={clip.id}>
+            <button
+              className="about-video-item"
+              onClick={() => setActiveVideo(clip)}
+              aria-label={`View ${clip.label} in detail`}
+            >
+              <video src={clip.src} autoPlay loop muted playsInline />
+              <span className="about-video-overlay">View</span>
+            </button>
+            <a
+              href={clip.url}
+              target="_blank"
+              rel="noreferrer"
+              className="about-video-caption"
+            >
+              {clip.label} 
+            </a>
+          </div>
+        
+        ))}
+      </div>
+
+      {activeVideo && (
+        <div className="video-modal-overlay" onClick={() => setActiveVideo(null)}>
+          <div className="video-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="video-modal-header">
+              <span className="video-modal-title">{activeVideo.label}</span>
+              <button className="video-modal-close" onClick={() => setActiveVideo(null)} aria-label="Close">
+                <X size={18} />
+              </button>
+            </div>
+            <video src={activeVideo.src} controls autoPlay loop playsInline />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -2,10 +2,20 @@
 import { Radio, Download, Heart, ChevronRight } from "lucide-react";
 import DitherField from "../components/DitherField.jsx";
 import profilePhoto from "../assets/images/Fiky1.jpeg";
+import { useScrollReveal } from "../hooks/useScrollReveal.js";
 
 export default function Hero({ registerRef, scrollTo }) {
+  const [revealRef, visible] = useScrollReveal();
+
   return (
-    <section id="profile" ref={registerRef("profile")} className="hero">
+    <section
+      id="profile"
+      ref={(el) => {
+        registerRef("profile")(el);
+        revealRef.current = el;
+      }}
+      className={`hero reveal ${visible ? "reveal-visible" : ""}`}
+    >
       <DitherField />
       <div className="hero-inner">
         <div>
@@ -22,7 +32,7 @@ export default function Hero({ registerRef, scrollTo }) {
               <Download size={15} /> 
               <b>Lihat & Download CV</b>
             </a>
-            <a className="btn btn-coral" href="https://saweria.co/" target="_blank" rel="noreferrer">
+            <a className="btn btn-coral" href="https://saweria.co/fikyARDstory" rel="noreferrer">
               <Heart size={15} /> 
               <b>Support via Saweria</b>
             </a>

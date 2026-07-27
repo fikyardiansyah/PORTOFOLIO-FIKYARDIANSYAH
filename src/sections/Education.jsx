@@ -2,21 +2,31 @@
 import { GraduationCap } from "lucide-react";
 import Eyebrow from "../components/Eyebrow.jsx";
 import { EDUCATION } from "../data.js";
+import { useScrollReveal } from "../hooks/useScrollReveal.js";
 
 export default function Education() {
+  const [ref, visible] = useScrollReveal();
+
   return (
-    <section id="education" className="wrap">
+    <section id="education" ref={ref} className={`wrap reveal ${visible ? "reveal-visible" : ""}`}>
       <Eyebrow index="02">Education journey</Eyebrow>
       <h2 className="section-title">Where it started, where it's going</h2>
       <div className="timeline">
-        {EDUCATION.map((e) => (
-          <div className="timeline-item" key={e.school}>
-            <div className="timeline-year">{e.year}</div>
-            <div className="timeline-school">
-              <GraduationCap size={16} style={{ marginRight: 8, verticalAlign: -2 }} />
-              {e.school}
+        {EDUCATION.map((e, i) => (
+          <div
+            className="timeline-item"
+            key={e.school}
+            style={{ transitionDelay: visible ? `${i * 150}ms` : "0ms" }}
+          >
+            <div className="timeline-dot">
+              <GraduationCap size={16} />
             </div>
-            <div className="timeline-note">{e.note}</div>
+            <div className="timeline-content">
+              <div className="timeline-index">0{i + 1}</div>
+              <div className="timeline-year">{e.year}</div>
+              <div className="timeline-school">{e.school}</div>
+              <div className="timeline-note">{e.note}</div>
+            </div>
           </div>
         ))}
       </div>
