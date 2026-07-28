@@ -1009,7 +1009,7 @@ section { position: relative; z-index: 1; }
 .gb-stars {
     display: flex;
     gap: 2px;
-    color: #FFD700; /* Gold */
+    color: #FFD700; /* merah */
 }
 .gb-msg { color: var(--text-muted); font-size: 14px; }
 .gb-toast {
@@ -1026,6 +1026,102 @@ section { position: relative; z-index: 1; }
   height: 100%;
   opacity: 0.9;
   pointer-events: none;   /* tambahkan baris ini */
+}
+.gb-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+ 
+.gb-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+ 
+.gb-action-btn:hover {
+  color: var(--text);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+ 
+.gb-action-btn.liked {
+  color: hsl(0, 100%, 52%);/*merah*/
+  /* border-color: #FFD700; */
+}
+ 
+.gb-replies {
+  margin-top: 12px;
+  padding-left: 10px;
+  border-left: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+ 
+.gb-reply {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+}
+ 
+.gb-reply-icon {
+  margin-top: 3px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+ 
+.gb-reply-name {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text);
+}
+ 
+.gb-reply-msg {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+ 
+.gb-reply-form {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+ 
+.gb-reply-form input,
+.gb-reply-form textarea {
+  width: 100%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 11px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  resize: vertical;
+}
+ 
+.gb-reply-form input:focus,
+.gb-reply-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-line);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+ 
+.gb-reply-form .btn {
+  align-self: flex-start;
+  font-size: 12px;
+  padding: 7px 14px;
 }
 
 /* ---------- FOOTER ---------- */
