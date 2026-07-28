@@ -44,7 +44,7 @@ export default function Guestbook() {
   return (
     <section id="guestbook" className="wrap">
       <Eyebrow index="07">Guestbook</Eyebrow>
-      <h2 className="section-title">Comments &amp; rating</h2>
+      <h2 className="section-title">Comments & rating Websites</h2>
       <p className="section-lede">Visited the site? Leave a short note and rate the experience.</p>
       <div className="guestbook-grid">
         <form className="gb-form" onSubmit={submitComment}>

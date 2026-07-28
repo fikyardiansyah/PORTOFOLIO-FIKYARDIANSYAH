@@ -32,7 +32,7 @@ export default function Navbar({ active, menuOpen, setMenuOpen, scrollTo, onOpen
           {NAV_LINKS.map((l) => (
             <button key={l.id} onClick={() => scrollTo(l.id)}>{l.label}</button>
           ))}
-          <button onClick={onOpenAdmin}>Admin</button>
+          <button onClick={onOpenAdmin}>LOGIN</button>
           <span className="badge-status" style={{ width: "fit-content" }}>
             <span className="badge-dot" />
             Open for internship
