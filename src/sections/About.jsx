@@ -6,27 +6,24 @@ import mainVideo from "../assets/videos/main.mp4";
 import clip1 from "../assets/videos/clip-1.mp4";
 import clip2 from "../assets/videos/clip-2.mp4";
 import clip3 from "../assets/videos/clip-3.mp4";
-import clip4 from "../assets/videos/clip-4.mp4";
+// import clip4 from "../assets/videos/clip-4.mp4";
 import { useScrollReveal } from "../hooks/useScrollReveal.js";
 
 const CLIPS = [
   { id: "clip1", 
     src: clip1, 
-    label: "Tasya Kamila - Say No (Thailand Edit)", 
+    label: "Mercedes-Benz G63 AMG GT55 - 0-100 km/h Acceleration", 
+    synopsis: "Di tengah wabah zombie yang menyebar cepat di Korea Selatan, sekelompok penumpang kereta berjuang bertahan hidup sambil mencoba mencapai satu-satunya kota yang masih aman.",
     url: "https://youtu.be/6_YMnm5JFGc?si=qiJdmcLdroUBDdYS" 
   },
   { id: "clip2", 
     src: clip2, 
-    label: "Melanie Martinez – Play Date (Thailand Edit)", 
+    label: "Nissan GT-R (R34) - 0-100 km/h Acceleration", 
     url: "https://youtu.be/kwS7sqWfK6A?si=rHHSLMFdgLWOAYO5" },
   { id: "clip3", 
     src: clip3, 
-    label: "Manda Cello- Gak Pake Lama (Thailand Edit)", 
+    label: "Nissan GT-R (R35) - 0-100 km/h Acceleration", 
     url: "https://youtu.be/GmqQV_KAz8Y?si=TEt_7-_2xGZfY8VK" },
-  { id: "clip4", 
-    src: clip4, 
-    label: "NIKI - Lowkey (Thailand Edit)", 
-    url: "https://youtu.be/0g1k5j6J3xM?si=7r8X9W2nYp7Z0q3A" },
 ];
 
 export default function About() {
