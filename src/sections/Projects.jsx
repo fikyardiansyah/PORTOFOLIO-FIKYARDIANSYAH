@@ -60,7 +60,7 @@ export default function Projects({ registerRef }) {
                 {p.stack.map((t) => <span className="stack-pill" key={t}>{t}</span>)}
               </div>
               <button className="project-more-btn" onClick={() => openProject(p)}>
-                Selengkapnya <span aria-hidden="true">→</span>
+                Selengkapnya <span className="btn-arrow" aria-hidden="true">→</span>
               </button>
             </div>
           </div>
