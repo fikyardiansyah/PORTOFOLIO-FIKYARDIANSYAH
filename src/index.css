@@ -1556,7 +1556,6 @@ section { position: relative; z-index: 1; }
 @media (max-width: 700px) {
   .projects-list {
     display: flex;
-    align-items: flex-start;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 16px;
@@ -1575,6 +1574,7 @@ section { position: relative; z-index: 1; }
     scroll-snap-align: start;
   }
 }
+
 /* ---------- ABOUT VIDEO MOBILE ---------- */
 @media (max-width: 700px) {
   .about-video-row {
