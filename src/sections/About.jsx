@@ -70,7 +70,7 @@ export default function About() {
 
       <div className="must-watch-label">
         <span className="must-watch-line" />
-        <span className="must-watch-text">Must Watch Movie</span>
+        <span className="must-watch-text">Visual Highlight</span>
         <span className="must-watch-line" />
       </div>
 

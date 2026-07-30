@@ -109,7 +109,7 @@ export const PROJECTS = [
       "Sistem transaksi sewa terintegrasi",
       "Terhubung dengan database Supabase",
     ],
-    stack: ["Vue.js", "JavaScript", "Supabase"],
+    stack: ["Vue.js", "JavaScript", "Supa"],
     accent: "mint",
     images: ["/projects/gasngo1.png", "/projects/gasngo2.png"],
     liveUrl: "https://gasngo.example.com",
