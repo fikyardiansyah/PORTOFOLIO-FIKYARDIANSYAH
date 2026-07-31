@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Star, Send, Heart, CornerDownRight, MessageCircle } from "lucide-react";
 import Eyebrow from "../components/Eyebrow.jsx";
 import { supabase } from "../lib/supabase.js";
 
-// id unik per browser, dipakai supaya 1 device cuma bisa like 1x per komentar
 function getDeviceId() {
   let id = localStorage.getItem("gb_device_id");
   if (!id) {
@@ -15,7 +14,7 @@ function getDeviceId() {
 
 export default function Guestbook() {
   const [comments, setComments] = useState([]);
-  const [replies, setReplies] = useState({}); // { [comment_id]: [reply, ...] }
+  const [replies, setReplies] = useState({});
   const [likedIds, setLikedIds] = useState(() => {
     try {
       return new Set(JSON.parse(localStorage.getItem("gb_liked") || "[]"));
@@ -31,8 +30,12 @@ export default function Guestbook() {
   const [loading, setLoading] = useState(true);
 
   const [isAdmin, setIsAdmin] = useState(false);
-  const [openReplyFor, setOpenReplyFor] = useState(null); // comment id yang lagi buka form balas
+  const [openReplyFor, setOpenReplyFor] = useState(null);
   const [replyDraft, setReplyDraft] = useState({ name: "Admin FikyArdiansyah✅", message: "" });
+
+  const [slideIndex, setSlideIndex] = useState(0);
+  const autoPlayRef = useRef(null);
+  const touchStartX = useRef(0);
 
   const deviceId = getDeviceId();
 
@@ -64,7 +67,6 @@ export default function Guestbook() {
     loadComments();
     loadReplies();
 
-    // cek status login admin (Supabase Auth), sama seperti di dashboard
     supabase.auth.getSession().then(({ data }) => {
       setIsAdmin(!!data.session);
     });
@@ -75,6 +77,43 @@ export default function Guestbook() {
 
     return () => listener.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (comments.length === 0) return;
+    autoPlayRef.current = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % comments.length);
+    }, 5000);
+    return () => clearInterval(autoPlayRef.current);
+  }, [comments.length]);
+
+  const resetAutoPlay = () => {
+    clearInterval(autoPlayRef.current);
+    if (comments.length === 0) return;
+    autoPlayRef.current = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % comments.length);
+    }, 5000);
+  };
+
+  const goToSlide = (i) => {
+    setSlideIndex(i);
+    resetAutoPlay();
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (comments.length === 0) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (diff > 50) {
+      setSlideIndex((i) => (i + 1) % comments.length);
+      resetAutoPlay();
+    } else if (diff < -50) {
+      setSlideIndex((i) => (i - 1 + comments.length) % comments.length);
+      resetAutoPlay();
+    }
+  };
 
   const persistLiked = (set) => {
     setLikedIds(new Set(set));
@@ -99,7 +138,7 @@ export default function Guestbook() {
   };
 
   const submitReply = async (commentId) => {
-    if (!isAdmin) return; // jaga-jaga di client, RLS yang jaga di server
+    if (!isAdmin) return;
     if (!replyDraft.message.trim()) return;
     const { error } = await supabase.from("comment_replies").insert({
       comment_id: commentId,
@@ -118,7 +157,6 @@ export default function Guestbook() {
     const nextLiked = new Set(likedIds);
 
     if (isLiked) {
-      // unlike
       const { error } = await supabase
         .from("comment_likes")
         .delete()
@@ -131,11 +169,10 @@ export default function Guestbook() {
         .update({ likes: Math.max(0, comment.likes - 1) })
         .eq("id", comment.id);
     } else {
-      // like
       const { error } = await supabase
         .from("comment_likes")
         .insert({ comment_id: comment.id, device_id: deviceId });
-      if (error) return; // sudah pernah like (unique constraint), atau error lain
+      if (error) return;
       nextLiked.add(comment.id);
       await supabase
         .from("comments")
@@ -145,6 +182,80 @@ export default function Guestbook() {
 
     persistLiked(nextLiked);
     loadComments();
+  };
+
+  const renderCommentItem = (c) => {
+    const isLiked = likedIds.has(c.id);
+    const commentReplies = replies[c.id] || [];
+    const isReplyOpen = openReplyFor === c.id;
+
+    return (
+      <div className="gb-item" key={c.id}>
+        <div className="gb-item-head">
+          <span className="gb-name">{c.name}</span>
+          <span className="gb-stars">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} size={13} fill={i < c.rating ? "currentColor" : "none"} />
+            ))}
+          </span>
+        </div>
+        <div className="gb-msg">{c.message}</div>
+
+        <div className="gb-actions">
+          <button
+            type="button"
+            className={`gb-action-btn${isLiked ? " liked" : ""}`}
+            onClick={() => toggleLike(c)}
+          >
+            <Heart size={14} fill={isLiked ? "currentColor" : "none"} />
+            {c.likes || 0}
+          </button>
+
+          {isAdmin && (
+            <button
+              type="button"
+              className="gb-action-btn"
+              onClick={() => setOpenReplyFor(isReplyOpen ? null : c.id)}
+            >
+              <MessageCircle size={14} />
+              Reply{commentReplies.length > 0 ? ` (${commentReplies.length})` : ""}
+            </button>
+          )}
+        </div>
+
+        {commentReplies.length > 0 && (
+          <div className="gb-replies">
+            {commentReplies.map((r) => (
+              <div className="gb-reply" key={r.id}>
+                <CornerDownRight size={12} className="gb-reply-icon" />
+                <div>
+                  <span className="gb-reply-name">{r.name}</span>
+                  <div className="gb-reply-msg">{r.message}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isAdmin && isReplyOpen && (
+          <div className="gb-reply-form">
+            <textarea
+              rows={2}
+              value={replyDraft.message}
+              onChange={(e) => setReplyDraft({ ...replyDraft, message: e.target.value })}
+              placeholder="Write a reply as admin..."
+            />
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => submitReply(c.id)}
+            >
+              <Send size={13} /> Post reply
+            </button>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -186,85 +297,35 @@ export default function Guestbook() {
           {sent && <div className="gb-toast">Thanks — your comment was posted.</div>}
         </form>
 
-        <div className="gb-list">
-          {loading && <div className="section-lede">Loading comments...</div>}
-          {!loading && comments.length === 0 && (
-            <div className="section-lede">Belum ada komentar, jadi yang pertama!</div>
-          )}
-          {comments.map((c) => {
-            const isLiked = likedIds.has(c.id);
-            const commentReplies = replies[c.id] || [];
-            const isReplyOpen = openReplyFor === c.id;
-
-            return (
-              <div className="gb-item" key={c.id}>
-                <div className="gb-item-head">
-                  <span className="gb-name">{c.name}</span>
-                  <span className="gb-stars">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} size={13} fill={i < c.rating ? "currentColor" : "none"} />
-                    ))}
-                  </span>
-                </div>
-                <div className="gb-msg">{c.message}</div>
-
-                <div className="gb-actions">
-                  <button
-                    type="button"
-                    className={`gb-action-btn${isLiked ? " liked" : ""}`}
-                    onClick={() => toggleLike(c)}
-                  >
-                    <Heart size={14} fill={isLiked ? "currentColor" : "none"} />
-                    {c.likes || 0}
-                  </button>
-
-                  {/* Reply hanya untuk admin yang sudah login */}
-                  {isAdmin && (
-                    <button
-                      type="button"
-                      className="gb-action-btn"
-                      onClick={() => setOpenReplyFor(isReplyOpen ? null : c.id)}
-                    >
-                      <MessageCircle size={14} />
-                      Reply{commentReplies.length > 0 ? ` (${commentReplies.length})` : ""}
-                    </button>
-                  )}
-                </div>
-
-                {commentReplies.length > 0 && (
-                  <div className="gb-replies">
-                    {commentReplies.map((r) => (
-                      <div className="gb-reply" key={r.id}>
-                        <CornerDownRight size={12} className="gb-reply-icon" />
-                        <div>
-                          <span className="gb-reply-name">{r.name}</span>
-                          <div className="gb-reply-msg">{r.message}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {isAdmin && isReplyOpen && (
-                  <div className="gb-reply-form">
-                    <textarea
-                      rows={2}
-                      value={replyDraft.message}
-                      onChange={(e) => setReplyDraft({ ...replyDraft, message: e.target.value })}
-                      placeholder="Write a reply as admin..."
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={() => submitReply(c.id)}
-                    >
-                      <Send size={13} /> Post reply
-                    </button>
-                  </div>
-                )}
+        <div className="gb-carousel">
+          <div
+            className="gb-carousel-track"
+            style={{ transform: `translateX(-${slideIndex * 100}%)` }}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {loading && <div className="section-lede">Loading comments...</div>}
+            {!loading && comments.length === 0 && (
+              <div className="section-lede">Belum ada komentar, jadi yang pertama!</div>
+            )}
+            {comments.map((c) => (
+              <div className="gb-carousel-slide" key={c.id}>
+                {renderCommentItem(c)}
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          {comments.length > 1 && (
+            <div className="gb-carousel-dots">
+              {comments.map((_, i) => (
+                <span
+                  key={i}
+                  className={`dot ${i === slideIndex ? "dot-active" : ""}`}
+                  onClick={() => goToSlide(i)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 // import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import Eyebrow from "../components/Eyebrow.jsx";
 import mainVideo from "../assets/videos/main.mp4";
@@ -10,25 +10,49 @@ import clip3 from "../assets/videos/clip-3.mp4";
 import { useScrollReveal } from "../hooks/useScrollReveal.js";
 
 const CLIPS = [
-  { id: "clip1", 
-    src: clip1, 
-    label: "Mercedes-Benz G63 AMG GT55 - 0-100 km/h Acceleration", 
-    synopsis: "Di tengah wabah zombie yang menyebar cepat di Korea Selatan, sekelompok penumpang kereta berjuang bertahan hidup sambil mencoba mencapai satu-satunya kota yang masih aman.",
-    url: "https://youtu.be/6_YMnm5JFGc?si=qiJdmcLdroUBDdYS" 
+  {
+    id: "clip1",
+    src: clip1,
+    label: "Mercedes-Benz G63 AMG GT55 - 0-100 km/h Acceleration",
+    synopsis: "Uji akselerasi Mercedes-Benz G63 AMG GT55 dari 0 ke 100 km/h, menampilkan tenaga dan performa mesin V8 twin-turbo khas AMG.",
+    url: "https://youtu.be/6_YMnm5JFGc?si=qiJdmcLdroUBDdYS",
   },
-  { id: "clip2", 
-    src: clip2, 
-    label: "Nissan GT-R (R34) - 0-100 km/h Acceleration", 
-    url: "https://youtu.be/kwS7sqWfK6A?si=rHHSLMFdgLWOAYO5" },
-  { id: "clip3", 
-    src: clip3, 
-    label: "Nissan GT-R (R35) - 0-100 km/h Acceleration", 
-    url: "https://youtu.be/GmqQV_KAz8Y?si=TEt_7-_2xGZfY8VK" },
+  {
+    id: "clip2",
+    src: clip2,
+    label: "Nissan GT-R (R34) - 0-100 km/h Acceleration",
+    synopsis: "Momen ikonik akselerasi Nissan GT-R R34, salah satu legenda JDM dengan performa mesin RB26DETT yang legendaris.",
+    url: "https://youtu.be/kwS7sqWfK6A?si=rHHSLMFdgLWOAYO5",
+  },
+  {
+    id: "clip3",
+    src: clip3,
+    label: "Nissan GT-R (R35) - 0-100 km/h Acceleration",
+    synopsis: "Generasi modern Nissan GT-R R35 menunjukkan lompatan performa dengan sistem AWD dan mesin twin-turbo V6 VR38DETT.",
+    url: "https://youtu.be/GmqQV_KAz8Y?si=TEt_7-_2xGZfY8VK",
+  },
 ];
 
 export default function About() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [ref, visible] = useScrollReveal();
+  const [slideIndex, setSlideIndex] = useState(0);
+  const autoPlayRef = useRef(null);
+
+  useEffect(() => {
+    autoPlayRef.current = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % CLIPS.length);
+    }, 5000);
+    return () => clearInterval(autoPlayRef.current);
+  }, []);
+
+  const goToSlide = (i) => {
+    clearInterval(autoPlayRef.current);
+    setSlideIndex(i);
+    autoPlayRef.current = setInterval(() => {
+      setSlideIndex((idx) => (idx + 1) % CLIPS.length);
+    }, 5000);
+  };
 
   return (
     <section id="about" ref={ref} className={`wrap reveal ${visible ? "reveal-visible" : ""}`}>
@@ -74,28 +98,42 @@ export default function About() {
         <span className="must-watch-line" />
       </div>
 
-      <div className="about-video-row">
-        {CLIPS.map((clip) => (
-          <div className="about-video-wrap" key={clip.id}>
-            <button
-              className="about-video-item"
-              onClick={() => setActiveVideo(clip)}
-              aria-label={`View ${clip.label} in detail`}
+      <div className="video-carousel">
+        <div
+          className="video-carousel-track"
+          style={{ transform: `translateX(-${slideIndex * 100}%)` }}
+        >
+          {CLIPS.map((clip) => (
+            <div className="video-carousel-slide" key={clip.id}>
+              <button
+                className="video-carousel-video-btn"
+                onClick={() => setActiveVideo(clip)}
+                aria-label={`View ${clip.label} in detail`}
+              >
+                <video src={clip.src} autoPlay loop muted playsInline />
+                <span className="about-video-overlay">View</span>
+              </button>
+              <a
+                href={clip.url}
+                target="_blank"
+                rel="noreferrer"
+                className="about-video-caption"
             >
-              <video src={clip.src} autoPlay loop muted playsInline />
-              <span className="about-video-overlay">View</span>
-            </button>
-            <a
-              href={clip.url}
-              target="_blank"
-              rel="noreferrer"
-              className="about-video-caption"
-            >
-              {clip.label} 
-            </a>
-          </div>
-        
-        ))}
+                {clip.label}
+              </a>
+            </div>
+          ))}
+        </div>
+
+        <div className="video-carousel-dots">
+          {CLIPS.map((_, i) => (
+            <span
+              key={i}
+              className={`dot ${i === slideIndex ? "dot-active" : ""}`}
+              onClick={() => goToSlide(i)}
+            />
+          ))}
+        </div>
       </div>
 
       {activeVideo && (
@@ -108,6 +146,12 @@ export default function About() {
               </button>
             </div>
             <video src={activeVideo.src} controls autoPlay loop playsInline />
+            {activeVideo.synopsis && (
+              <div className="video-modal-synopsis">
+                <span className="video-modal-synopsis-label">Synopsis</span>
+                <p>{activeVideo.synopsis}</p>
+              </div>
+            )}
           </div>
         </div>
       )}

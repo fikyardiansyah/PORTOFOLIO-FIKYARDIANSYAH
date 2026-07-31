@@ -400,11 +400,46 @@ section { position: relative; z-index: 1; }
   display: block;
 }
 
-.about-video-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin-top: 32px;
+.video-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.video-carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.video-carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.video-carousel-video-btn {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  max-height: 360px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.video-carousel-video-btn video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.video-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
 }
 .about-video-item {
   position: relative;
@@ -560,6 +595,26 @@ section { position: relative; z-index: 1; }
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+@media (min-width: 701px) {
+  .video-carousel {
+    max-width: 100%;
+  }
+  .video-carousel-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    transform: none !important;
+  }
+  .video-carousel-slide {
+    flex: none;
+  }
+  .video-carousel-video-btn {
+    max-height: 200px;
+  }
+  .video-carousel-dots {
+    display: none;
+  }
 }
 
 /* .info-card {
@@ -920,6 +975,43 @@ section { position: relative; z-index: 1; }
   gap: 12px;
   flex-wrap: wrap;
 }
+.project-carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.project-carousel-slide {
+  flex: 0 0 100%;
+}
+.project-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Desktop: kembalikan jadi grid, JS carousel tidak berlaku */
+@media (min-width: 701px) {
+  .project-carousel-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    transform: none !important;
+  }
+  .project-carousel-slide {
+    flex: none;
+  }
+  .project-carousel-dots {
+    display: none;
+  }
+}
+
+/* Mobile: carousel penuh 1 layar */
+@media (max-width: 700px) {
+  .project-carousel {
+    overflow: hidden;
+    border-radius: 14px;
+  }
+}
 
 /* ---------- ACHIEVEMENTS ---------- */
 .cert-list {
@@ -985,6 +1077,49 @@ section { position: relative; z-index: 1; }
   margin-bottom: 8px;
 }
 .cert-title { font-family: var(--font-display); font-weight: 600; font-size: 17px; }
+.cert-carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.cert-carousel-slide {
+  flex: 0 0 100%;
+}
+.cert-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Desktop: kembalikan jadi grid, JS carousel tidak berlaku */
+@media (min-width: 701px) {
+  .cert-carousel-track {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    transform: none !important;
+  }
+  .cert-carousel-slide {
+    flex: none;
+  }
+  .cert-carousel-dots {
+    display: none;
+  }
+}
+
+/* Mobile: carousel penuh 1 layar */
+@media (max-width: 700px) {
+  .cert-carousel {
+    overflow: hidden;
+    border-radius: 14px;
+  }
+  .cert-card {
+    grid-template-columns: 1fr;
+  }
+  .cert-banner {
+    min-height: 180px;
+  }
+}
 
 @media (max-width: 700px) {
   .cert-list {
@@ -1265,6 +1400,45 @@ section { position: relative; z-index: 1; }
   align-self: flex-start;
   font-size: 12px;
   padding: 7px 14px;
+}
+.gb-carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.gb-carousel-slide {
+  flex: 0 0 100%;
+}
+/* .gb-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+} */
+
+/* Desktop: kembalikan jadi list vertikal biasa, JS carousel tidak berlaku */
+@media (min-width: 701px) {
+  .gb-carousel-track {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 460px;
+    overflow-y: auto;
+    transform: none !important;
+  }
+  .gb-carousel-slide {
+    flex: none;
+  }
+  .gb-carousel-dots {
+    display: none;
+  }
+}
+
+/* Mobile: carousel penuh 1 layar */
+@media (max-width: 700px) {
+  .gb-carousel {
+    overflow: hidden;
+    border-radius: 14px;
+  }
 }
 
 /* ---------- FOOTER ---------- */
